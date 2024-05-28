@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Вход в аккаунт
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5" style="border-radius: 30px;">
+    <div class="d-flex justify-content-center">
+        <div class="col-4">
+            <form action="" method="post" class="bg-dark p-2">
+                {% csrf_token %}
+                <p>
+                    <label for="login_form.username.id_for_label" class="text-danger p-2 fs-5">
+                        <i class="bi bi-person-circle"></i>
+                        {{ login_form.username.label }}
+                    </label>
+                    {{ login_form.username }}
+                </p>
+                <p>
+                    <label for="login_form.password.id_for_label" class="text-danger p-2 fs-5">
+                        <i class="bi bi-shield-lock-fill"></i>
+
+                        {{ login_form.password.label }}
+                    </label>
+                    {{ login_form.password }}
+                </p>
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-outline-danger">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

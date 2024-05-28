@@ -1,0 +1,83 @@
+body {
+    background: url(../image/back.png);
+    background-position: center, center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.custom-border {
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.custom-bg {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.814);
+}
+
+.text-blueviolet {
+    color: blueviolet;
+}
+
+.text-paginator {
+    color: blueviolet;
+    font-size: 19px;
+}
+
+.text-paginator:hover {
+    color: red;
+    font-size: 19px;
+}
+
+.btn-outline-blueviolet {
+    border: 2px solid blueviolet;
+    color: blueviolet;
+}
+
+.btn-outline-blueviolet:hover {
+    color: white;
+    background-color: blueviolet;
+}
+
+.active-custom {
+    color: rgb(0, 0, 0);
+    background-color: blueviolet;
+}
+
+.active-custom:hover {
+    color: white;
+    background-color: rgb(100, 21, 173);
+}
+
+.catalog-item {
+    background-color: black;
+    color: blueviolet;
+}
+
+.catalog-item:hover {
+    background-color: rgba(0, 0, 0, 0.895);
+    color: red;
+}
+
+.form-custom {
+    border: 2px solid black;
+    background-color: blueviolet;
+}
+
+.form-custom:focus {
+    border: 2px solid black;
+    background-color: blueviolet;
+    box-shadow: none;
+}
+
+.custom-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.accordion-custom {
+    margin-top: 20px;
+    color: blueviolet;
+    border: 2px solid #c20808;
+}

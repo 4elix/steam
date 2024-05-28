@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load price_tag %}
+
+{% block title %}
+{{ game.title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-center">
+        <div class="col-9">
+            <div class="card h-100 bg-dark">
+                <div class="d-flex flex-wrap">
+                    <div class="p-3">
+                        <img src="{{ game.get_first_photo }}" class="card-img-top custom-border"
+                             style="min-width: 200px;" alt="..." onclick="openFullscreen(this)">
+                    </div>
+
+                    <div class="d-flex justify-content-evenly">
+                        {% for i in game.get_second_photo %}
+                        <div class="col-3 my-auto">
+
+                            <img src="{{ i.photo.url }}" class="card-img-top custom-border"
+                                 onclick="openFullscreen(this)" alt="...">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="my-auto">
+                        <h4 class="card-title text-blueviolet">{{ game.title }}</h4>
+                    </div>
+                    <p class="card-text fs-5 text-blueviolet">
+                        Краткое описание: {{ game.short_description }}
+                    </p>
+                    <br>
+                    <p class="card-text fs-5 text-blueviolet">
+                        Описание: {{ game.full_description }}
+                    </p>
+
+                    <div class="d-flex flex-column pb-2">
+                        <small class="text-blueviolet fs-5">Дата выхода: {{ game.date_time }}</small>
+                        <small class="text-blueviolet fs-5">Категория: {{ game.category }}</small>
+                    </div>
+                    <div class="d-flex flex-row text-danger">
+                        <small class="text-blueviolet fs-5">Теги или под категории: </small>
+                        {% for tag in game.tags.all %}
+                        <small class="text-blueviolet fs-5 px-2">{{ tag }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-evenly">
+                        <a href="{% url 'download' game.slug %}" class="btn btn-outline-danger my-auto">Скачать</a>
+                        <a href="#" class="btn btn-outline-danger my-auto">Купить</a>
+                        <div class="d-flex flex-column pb-2 text-blueviolet">
+                            {% price_simple_tag game.price_old game.price_new game.discount as price %}
+                            {{ price }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-8 bg-dark p-3">
+            <form action="" method="post" class="text-blueviolet">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+
+                <button type="submit" class="btn btn-outline-blueviolet">Отправить</button>
+            </form>
+            {% include 'components/_comments.html' %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

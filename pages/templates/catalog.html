@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catalog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-danger">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">GameSuper</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Главная страница</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalog.html">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Карзина</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="desired.html">Желаймое</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="detail.html">О нас</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Аккаунт
+                        </a>
+                        <ul class="dropdown-menu bg-danger">
+                            <li><a class="dropdown-item bg-danger" href="#">Войти</a></li>
+                            <li><a class="dropdown-item bg-danger" href="#">Регистрация</a></li>
+                            <li><a class="dropdown-item bg-danger" href="#">Выйти</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+                    <button class="btn btn-outline-dark" type="submit">Поиск</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        
+        
+        <div class="d-flex justify-content-end my-5">
+            <a href="#" class="btn btn-outline-blueviolet" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                Catalog
+            </a>
+        </div>
+
+        <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header bg-danger">
+              <h5 class="offcanvas-title" id="offcanvasExampleLabel">Категория</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action active-custom" aria-current="true">
+                  The current link item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action catalog-item">A second link item</a>
+                <a href="#" class="list-group-item list-group-item-action catalog-item">A third link item</a>
+                <a href="#" class="list-group-item list-group-item-action catalog-item">A fourth link item</a>
+              </div>
+            </div>
+          </div>
+
+        <div class="row row-cols-1 row-cols-md-2 g-5">
+            <div class="col">
+                <div class="card mb-6 h-100 bg-dark">
+                    <div class="row g-0">
+                        <div class="col-md-6 p-2">
+                            <img src="image/img.jpg" class="img-fluid custom-border" alt="...">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between my-auto">
+                                    <h5 class="card-title text-blueviolet">Card title</h5>
+                                    <a href="" class="text-danger fs-5"><i class="bi bi-heart-fill"></i></a>
+                                </div>
+                                <p class="card-text text-blueviolet">Краткое описание: This is a wider card with
+                                    supporting text below
+                                    as a natural</p>
+                                <div class="d-flex flex-column pb-2">
+                                    <small class="text-blueviolet">Дата вохода: </small>
+                                    <small class="text-blueviolet">Дата вохода: </small>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="detail.html" class="btn btn-outline-danger">Заинтересовало</a>
+                                        <p class="fs-5 my-auto text-blueviolet">245 $$ </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-6 h-100">
+                    <div class="row g-0">
+                        <div class="col-md-6 p-2">
+                            <img src="image/img.jpg" class="img-fluid custom-border" alt="...">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between my-auto">
+                                    <h5 class="card-title">Card title</h5>
+                                    <a href="" class="text-danger fs-5"><i class="bi bi-heart-fill"></i></a>
+                                </div>
+                                <p class="card-text">Краткое описание: This is a wider card with supporting text below
+                                    as a natural</p>
+                                <div class="d-flex flex-column pb-2">
+                                    <small class="text-body-secondary">Дата вохода: </small>
+                                    <small class="text-body-secondary">Дата вохода: </small>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="#" class="btn btn-outline-danger">Заинтересовало</a>
+                                        <p class="fs-5 my-auto">245 $$ </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-6 h-100">
+                    <div class="row g-0">
+                        <div class="col-md-6 p-2">
+                            <img src="image/img.jpg" class="img-fluid custom-border" alt="...">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between my-auto">
+                                    <h5 class="card-title">Card title</h5>
+                                    <a href="" class="text-danger fs-5"><i class="bi bi-heart-fill"></i></a>
+                                </div>
+                                <p class="card-text">Краткое описание: This is a wider card with supporting text below
+                                    as a natural</p>
+                                <div class="d-flex flex-column pb-2">
+                                    <small class="text-body-secondary">Дата вохода: </small>
+                                    <small class="text-body-secondary">Дата вохода: </small>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="#" class="btn btn-outline-danger">Заинтересовало</a>
+                                        <p class="fs-5 my-auto">245 $$ </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-6 h-100">
+                    <div class="row g-0">
+                        <div class="col-md-6 p-2">
+                            <img src="image/img.jpg" class="img-fluid custom-border" alt="...">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between my-auto">
+                                    <h5 class="card-title">Card title</h5>
+                                    <a href="" class="text-danger fs-5"><i class="bi bi-heart-fill"></i></a>
+                                </div>
+                                <p class="card-text">Краткое описание: This is a wider card with supporting text below
+                                    as a natural</p>
+                                <div class="d-flex flex-column pb-2">
+                                    <small class="text-body-secondary">Дата вохода: </small>
+                                    <small class="text-body-secondary">Дата вохода: </small>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="#" class="btn btn-outline-danger">Заинтересовало</a>
+                                        <p class="fs-5 my-auto">245 $$ </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center my-5">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link bg-dark text-paginator" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link text-paginator bg-dark" href="#">1</a></li>
+                <li class="page-item"><a class="page-link text-paginator bg-dark" href="#">2</a></li>
+                <li class="page-item"><a class="page-link text-paginator bg-dark" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link bg-dark text-paginator" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div style="background-color: blueviolet; margin-top: 100px;">
+        <nav class="navbar navbar-expand-lg fixed-bottom" style="background-color: blueviolet; margin-top: 400px;">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#footerSupportedContent" aria-controls="footerSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="footerSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Telegram: @superbot</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Фейсбук</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Инстграм</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">телефон</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Кодеры</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
