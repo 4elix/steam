@@ -1,9 +1,13 @@
 from django.db import models
+from django.shortcuts import reverse
 from django.contrib.auth.models import User
 
 
 class Categories(models.Model):
     name = models.CharField(max_length=200, verbose_name='Имя категории')
+
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'cat_id': self.pk})
 
     def __str__(self):
         return self.name
@@ -32,6 +36,9 @@ class Products(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'slug_path': self.slug})
+
     def get_first_photo(self):
         photo = self.game_photo.all().first()
         if photo is not None:
@@ -47,9 +54,7 @@ class Products(models.Model):
             return "https://images.satu.kz/126101312_w640_h640_razdel-v-razrabotketovary.jpg"
 
     class Meta:
-        # verbose_name -> задает имя в админ панельке
         verbose_name = 'Игра'
-        # verbose_name_plural -> задает имя в админ панельке во множественном числе
         verbose_name_plural = 'Игры'
 
 

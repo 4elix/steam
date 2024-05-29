@@ -54,5 +54,9 @@ class CategoriesAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         # Вычислить скидку, если старая и новая цена были введены
         if obj.price_old and obj.price_new:
-            obj.discount = round((obj.price_old - obj.price_new) / obj.price_old * 100)
+            res = round((obj.price_old - obj.price_new) / obj.price_old * 100)
+            if res < 0:
+                obj.discount = 0
+            else:
+                obj.discount = res
         super().save_model(request, obj, form, change)

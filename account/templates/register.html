@@ -8,10 +8,10 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-center">
         <div class="col-4">
-            <form action="" method="post">
+            <form action="" method="post" class="bg-dark p-2 text-danger p-2 fs-5">
                 {% csrf_token %}
 
-                {% register_form.as_p %}
+                {{ register_form.as_p }}
                 <div class="d-flex justify-content-center mt-3">
                     <button type="submit" class="btn btn-outline-danger">Отправить</button>
                 </div>
