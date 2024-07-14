@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container my-5 custom-bg">
+    <div class="row row-cols-1 row-cols-md-2 g-3 p-4">
+        {% for game in games %}
+        <div class="col" style="width: 30%">
+            <div class="card text-bg-dark">
+                <img src="{{ game.product.get_first_photo }}" class="card-img" alt="...">
+                <div class="text-center">
+                    <h5 class="card-title text-blueviolet">{{ game.product.title }}</h5>
+                    <div class="d-flex justify-content-evenly">
+                        <a href="{% url 'download_path' game.product.slug %}" class="btn btn-outline-danger my-auto">
+                            Скачать
+                        </a>
+                        <a href="{{ game.product.get_absolute_url }}" class="btn btn-outline-danger my-2">
+                            Посмотреть
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

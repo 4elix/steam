@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ReviewForm
 from account.models import Profile
+from payment.models import GameLibrary
 from .models import Categories, Products, Favorite, Review
 
 
@@ -12,6 +13,7 @@ def index_page(request):
     categories = Categories.objects.all()
     games = Products.objects.all()
     games_discount = [i for i in games if i.discount > 0]
+
     content = {
         'active': 1,
         'categories': categories,
@@ -19,6 +21,28 @@ def index_page(request):
         'games_discount': games_discount
     }
     return render(request, 'pages/index.html', context=content)
+
+
+class CatalogPage(ListView):
+    model = Products
+    template_name = 'pages/catalog.html'
+    context_object_name = 'games'
+    paginate_by = 3
+    extra_context = {
+        'active': 2,
+        'categories': Categories.objects.all()
+    }
+
+
+class ShowGameRelatedCategories(CatalogPage):
+    def get_queryset(self):
+        games = Products.objects.filter(category_id=self.kwargs['cat_id'])
+        return games
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = Categories.objects.get(pk=self.kwargs['cat_id'])
+        return context
 
 
 def show_detail(request, slug_path):
@@ -86,14 +110,17 @@ def like_logic(request, pk_product):
 def page_desired(request, user_id):
     profile = get_object_or_404(Profile, user_id=user_id)
     list_desired = Favorite.objects.filter(auth=profile.user)
+    list_comment = Review.objects.filter(auth=profile.user)
+    list_buy_game = GameLibrary.objects.filter(user=request.user)
 
     context = {
         'profile': profile,
         'list_desired': list_desired,
         'count_user_desired': list_desired.count(),
-        'count_user_reviews': list_desired.count(),
+        'count_user_reviews': list_comment.count(),
+        'count_user_buy_game': list_buy_game.count(),
         'user_name': request.user.username,
-        'active': 3
+        'active': 4
     }
     return render(request, 'pages/desired.html', context)
 
@@ -106,26 +133,4 @@ def download_file(request, slug_path):
         return response
     else:
         messages.error(request, 'Нету файла игры (((')
-        return redirect('detail_path', game.slug)
-
-
-class CatalogPage(ListView):
-    model = Products
-    template_name = 'pages/catalog.html'
-    context_object_name = 'games'
-    paginate_by = 3
-    extra_context = {
-        'active': 2,
-        'categories': Categories.objects.all()
-    }
-
-
-class ShowGameRelatedCategories(CatalogPage):
-    def get_queryset(self):
-        games = Products.objects.filter(category_id=self.kwargs['cat_id'])
-        return games
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-        context['title'] = Categories.objects.get(pk=self.kwargs['cat_id'])
-        return context
+        return redirect(request.META.get('HTTP_REFERER', 'home_path'))

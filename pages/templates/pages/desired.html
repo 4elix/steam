@@ -15,13 +15,13 @@
             <div class="card bg-dark">
                 <div class="row g-o">
                     <div class="col-4">
-                        {% if profile.user.profile_image %}
+                        {% if profile.profile_image %}
                         <div class="p-2 text-center">
-                            <img src="{{ profile.user.profile_image.url }}" class="card-img-top profile_image"
+                            <img src="{{ profile.profile_image.url }}" class="card-img-top profile_image_active"
                                  alt="...">
                         </div>
                         {% else %}
-                        <div class="text-center my-3">
+                        <div class="p-2 text-center">
                             <img src="{% static 'image/dont_user.png' %}" class="card-img-top profile_image"
                                  alt="...">
                         </div>
@@ -42,11 +42,13 @@
                                 </p>
                                 {% endif %}
                                 <p class="card-text text-blueviolet fs-5">
-                                    Колицество желаймого: {{ count_user_desired }}
-                                </p>
+                                    Кол-во желаемых игр: {{ count_user_desired }}
                                 </p>
                                 <p class="card-text text-blueviolet fs-5">
-                                    Колицество отзовов: {{ count_user_reviews }}
+                                    Кол-во отзывов: {{ count_user_reviews }}
+                                </p>
+                                <p class="card-text text-blueviolet fs-5">
+                                    Кол-во купленных игр: {{ count_user_buy_game }}
                                 </p>
                             </div>
                         </div>

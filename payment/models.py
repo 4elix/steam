@@ -89,3 +89,15 @@ class City(models.Model):
     class Meta:
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
+
+
+class GameLibrary(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='library_game')
+
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        verbose_name = 'Библиотека игр'
+        verbose_name_plural = 'Библиотеки игр'

@@ -1,10 +1,13 @@
+from django.shortcuts import redirect
+from django.contrib import messages
+
 from .models import Products, OrderProduct, Order, Customer
 
 
 class CartForAuthenticatedUser:
     def __init__(self, request, product_id=None, action=None):
         self.user = request.user
-
+        self.request = request
         if product_id and action:
             self.add_or_delete(product_id, action)
 
@@ -26,17 +29,19 @@ class CartForAuthenticatedUser:
     def add_or_delete(self, product_id, action):
         order = self.get_cart_info()['order']
         product = Products.objects.get(pk=product_id)
-        order_product, created = OrderProduct.objects.get_or_create(order=order, product=product)
+        order_product = OrderProduct.objects.filter(order=order, product=product).exists()
+        if order_product is False:
+            create_order_product = OrderProduct.objects.create(order=order, product=product)
+            if action == 'add':
+                create_order_product.quantity += 1
+            else:
+                create_order_product.quantity -= 1
+            create_order_product.save()
 
-        if action == 'add':
-            order_product.quantity += 1
+            if create_order_product.quantity <= 0:
+                create_order_product.delete()
         else:
-            order_product.quantity -= 1
-
-        order_product.save()
-
-        if order_product.quantity <= 0:
-            order_product.delete()
+            return 404
 
     def clear(self):
         order = self.get_cart_info()['order']

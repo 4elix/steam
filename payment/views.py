@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
 
-from .models import Customer
+from .models import Customer, GameLibrary
 from .forms import CustomerForm, ShippingForm
 from .utils import get_cart_data, CartForAuthenticatedUser
 
@@ -16,6 +16,7 @@ def cart(request):
         'title': 'Моя корзина',
         'order': cart_info['order'],
         'products': cart_info['products'],
+        'active': 3
     }
     return render(request, 'payment/cart.html', context)
 
@@ -23,12 +24,17 @@ def cart(request):
 def to_cart(request, product_id, action):
     if request.user.is_authenticated:
         user_cart = CartForAuthenticatedUser(request, product_id, action)
-        messages.success(request, 'Все готово')
-        page = request.META.get('HTTP_REFERER', 'product_list')
-        return redirect(page)
+        status = user_cart.add_or_delete(product_id, action)
+        if status == 404:
+            messages.warning(request, 'Вы не можете добавить две игры сразу')
+            return redirect(request.META.get('HTTP_REFERER', 'home_path'))
+        else:
+            messages.success(request, 'Все готово')
+            page = request.META.get('HTTP_REFERER', 'home_path')
+            return redirect(page)
     else:
-        page = request.META.get('HTTP_REFERER', 'product_list')
-        messages.success(request, 'Все готово')
+        page = request.META.get('HTTP_REFERER', 'home_path')
+        messages.error(request, 'Что бы добавить в корзину надо выйти в аккаунт')
         return redirect(page)
 
 
@@ -90,9 +96,15 @@ def create_checkout_session(request):
 
 def success_payment(request):
     user_cart = CartForAuthenticatedUser(request)
+    order_product = user_cart.get_cart_info()['products']
+    user = request.user
+    for game in order_product:
+        game_library = GameLibrary.objects.create(user=user, product_id=game.product.pk)
+        game_library.save()
+
     user_cart.clear()
     messages.success(request, 'Ваша оплата прошла успешно')
-    return render(request, 'payment/success.html')
+    return render(request, 'payment/success.html', {'title': 'Успешная оплата'})
 
 
 def clear_card(request):
@@ -103,3 +115,13 @@ def clear_card(request):
         order_product.delete()
 
     return redirect('cart')
+
+
+def show_library(request):
+    games = GameLibrary.objects.filter(user=request.user)
+    context = {
+        'title': 'Библиотека игр',
+        'games': games,
+        'active': 5
+    }
+    return render(request, 'payment/game_library.html', context)

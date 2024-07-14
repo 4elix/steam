@@ -33,11 +33,7 @@
                         {% endif %}
                         <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
                             Количество товара: {{ item.quantity }}
-                            <a href="{% url 'to_cart' item.product.pk 'add' %}" class="text-danger"
-                               style="text-decoration: none; font-size: 18px">
-                                +
-                            </a>
-                            <a href="{% url 'to_cart' item.product.pk 'remove' %}" class="text-danger"
+                            <a href="{% url 'to_cart' item.product.pk 'remove' %}" class="text-danger "
                                style="text-decoration: none; font-size: 18px">
                                 -
                             </a>
