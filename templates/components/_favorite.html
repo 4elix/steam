@@ -3,11 +3,11 @@
 {% if request.user.is_authenticated %}
 {% check_favorite request.user item.pk as status_l %}
 {% if status_l %}
-<a href="{% url 'like_activa' item.pk %}" class="text-danger fs-5">
+<a href="{% url 'like_active_path' item.pk %}" class="text-danger fs-5">
     <i class="bi bi-heart-fill"></i>
 </a>
 {% else %}
-<a href="{% url 'like_activa' item.pk %}" class="text-danger fs-5">
+<a href="{% url 'like_active_path' item.pk %}" class="text-danger fs-5">
     <i class="bi bi-heart"></i>
 </a>
 {% endif %}

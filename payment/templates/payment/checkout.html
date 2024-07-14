@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="container custom-bg mt-5">
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-danger" href="{% url 'cart' %}">Назад в корзину</a>
+        </div>
+        <div class="col-lg-5">
+            <hr class="text-danger">
+            <h4 class="text-blueviolet text-center">Заказанные товары</h4>
+            <hr class="text-danger">
+            {% for item in items %}
+            <ul class="list-group list-group-flush my-3 text-center">
+                <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                    Товар: {{ item.product.title }}
+                </li>
+                {% if item.product.price_new <= 0 %}
+                <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                    Цена: {{ item.product.price_old }}
+                </li>
+                {% else %}
+                <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                    Цена: {{ item.product.price_new }}
+                </li>
+                {% endif %}
+                <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                    Количество товара: {{ item.quantity }}
+                </li>
+                <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                    Итог: {{ item.get_total_price }}
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-6">
+            <form action="{% url 'payment' %}" method="post">
+                {% csrf_token %}
+
+                <div class="" id="user-info">
+                    <hr class="text-danger">
+                    <h4 class="text-blueviolet text-center">Ваши данные</h4>
+                    <hr class="text-danger">
+                    <div class="my-2">
+                        {{ customer_form.first_name }}
+                    </div>
+                    <div class="my-2">
+                        {{ customer_form.last_name }}
+                    </div>
+                </div>
+
+                <div class="" id="shipping-info">
+                    <hr class="text-danger">
+                    <h4 class="text-blueviolet text-center">Адрес доставки</h4>
+                    <hr class="text-danger">
+                    {% for field in shipping_form %}
+                    <div class="my-2">
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-blueviolet">Оформить заказ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

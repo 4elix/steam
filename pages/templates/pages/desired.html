@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Жейлаемое
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center custom-bg" style="color: blueviolet;">Жилаемое</h3>
+    <div class="d-flex justify-content-center mb-4">
+        <p class="w-50" style="border-bottom: 3px solid rgb(255, 0, 0);"></p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 g-5">
+        <div class="col">
+            <div class="card bg-dark">
+                <div class="row g-o">
+                    <div class="col-4">
+                        {% if profile.user.profile_image %}
+                        <div class="p-2 text-center">
+                            <img src="{{ profile.user.profile_image.url }}" class="card-img-top profile_image"
+                                 alt="...">
+                        </div>
+                        {% else %}
+                        <div class="text-center my-3">
+                            <img src="{% static 'image/dont_user.png' %}" class="card-img-top profile_image"
+                                 alt="...">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-6">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between flex-column my-auto">
+                                <p class="card-text text-blueviolet fs-5">
+                                    Логин: {{ user_name|title }}
+                                </p>
+                                {% if profile.first_name and profile.last_name %}
+                                <p class="card-text text-blueviolet fs-5">
+                                    Имя: {{ profile.first_name|title }}
+                                </p>
+                                <p class="card-text text-blueviolet fs-5">
+                                    Фамилия: {{ profile.last_name|title }}
+                                </p>
+                                {% endif %}
+                                <p class="card-text text-blueviolet fs-5">
+                                    Колицество желаймого: {{ count_user_desired }}
+                                </p>
+                                </p>
+                                <p class="card-text text-blueviolet fs-5">
+                                    Колицество отзовов: {{ count_user_reviews }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-end">
+                                <a href="{% url 'profile' request.user.pk %}" class="btn btn-outline-danger my-auto">Перейти
+                                    на профель</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-dark">
+                {% if list_desired %}
+                <ul class="list-group list-group-flush p-2">
+                    {% for i in list_desired %}
+                    <li class="bg-dark list_li">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ i.product.get_absolute_url }}"
+                               class="list-group-item bg-dark text-danger my-auto fs-5" style="border: none;">
+                                {{ i.product.title }}
+                            </a>
+                            {% if i.product.discount > 0.0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6">
+                            скидка {{ i.product.discount }}%
+                            </span>
+                            <small class="text-danger my-auto py-3 fs-5">{{ i.product.price_new }} $$</small>
+                            {% else %}
+                            <small class="text-danger my-auto py-3 fs-5">{{ i.product.price_old }} $$</small>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+
+                <h3 class="py-3 text-center text-blueviolet">У вас нету желаемых</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

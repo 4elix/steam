@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static price_tag status_favorite %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="container mt-5 custom-bg">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-around align-items-center">
+                <h5 class="text-blueviolet">Количество: <strong>{{ order.get_cart_total_quantity }}</strong></h5>
+                <h5 class="text-blueviolet">Сумма заказа: <strong>{{ order.get_cart_total_price }}</strong></h5>
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <div class="col-4">
+                    {% for item in products %}
+                    <ul class="list-group list-group-flush my-3 text-center">
+                        <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                            Товар: {{ item.product.title }}
+                        </li>
+                        {% if item.product.price_new <= 0 %}
+                        <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                            Цена: {{ item.product.price_old }}
+                        </li>
+                        {% else %}
+                        <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                            Цена: {{ item.product.price_new }}
+                        </li>
+                        {% endif %}
+                        <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                            Количество товара: {{ item.quantity }}
+                            <a href="{% url 'to_cart' item.product.pk 'add' %}" class="text-danger"
+                               style="text-decoration: none; font-size: 18px">
+                                +
+                            </a>
+                            <a href="{% url 'to_cart' item.product.pk 'remove' %}" class="text-danger"
+                               style="text-decoration: none; font-size: 18px">
+                                -
+                            </a>
+                        </li>
+                        <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
+                            Итог: {{ item.get_total_price }}
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                {% if products %}
+                <a href="{% url 'clear_cart' %}" class="btn btn-danger">Очистить корзину</a>
+                <a href="{% url 'checkout' %}" class="btn btn-success">Оформить заказ</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

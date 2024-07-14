@@ -104,3 +104,33 @@ body {
     background: #000;
     padding: 10px;
 }
+
+.custom_image {
+    height: 200px;
+}
+
+.list_li {
+    list-style: none;
+}
+
+.list_li:not(:last-child){
+    border-bottom: 2px solid blueviolet;
+}
+
+.profile_image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    border: 1px solid black;
+    box-shadow: 9px 7px 6px #bd1111;
+}
+
+.profile_image_active {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    border: 1px solid black;
+}
+

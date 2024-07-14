@@ -1,13 +1,14 @@
 from django.db import models
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
+from account.models import Profile
 
 
 class Categories(models.Model):
     name = models.CharField(max_length=200, verbose_name='Имя категории')
 
     def get_absolute_url(self):
-        return reverse('category', kwargs={'cat_id': self.pk})
+        return reverse('category_path', kwargs={'cat_id': self.pk})
 
     def __str__(self):
         return self.name
@@ -37,7 +38,7 @@ class Products(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'slug_path': self.slug})
+        return reverse('detail_path', kwargs={'slug_path': self.slug})
 
     def get_first_photo(self):
         photo = self.game_photo.all().first()
@@ -64,6 +65,10 @@ class TagsGame(models.Model):
     def __str__(self):
         return self.tag_name
 
+    class Meta:
+        verbose_name = 'Тег или под категория'
+        verbose_name_plural = 'Теги или под категории'
+
 
 class Review(models.Model):
     datetime_review = models.DateTimeField(auto_now=True, verbose_name='Дата и время создания комментария')
@@ -89,5 +94,4 @@ class Favorite(models.Model):
 class ProductImage(models.Model):
     photo = models.ImageField(verbose_name="Фото", upload_to="products/", blank=True, null=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='game_photo')
-
 

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static price_tag status_favorite %}
+
+{% block title %}
+Главная страница
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center fs-2 custom-bg text-blueviolet">Популярные Игры</h3>
+    <div class="d-flex justify-content-center mb-4">
+        <p class="w-50" style="border-bottom: 3px solid blueviolet;"></p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-5">
+        {% for item in games %}
+        <div class="col">
+            <div class="card mb-6 h-100 bg-dark">
+                <div class="row g-0">
+                    <div class="col-md-6 p-2">
+                        <img src="{{ item.get_first_photo }}" class="img-fluid custom-border custom_image" alt="...">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between my-auto">
+                                <h5 class="card-title text-blueviolet">{{ item.title }}</h5>
+                                {% if request.user.is_authenticated %}
+                                {% include 'components/_favorite.html' %}
+                                {% else %}
+                                {% endif %}
+                            </div>
+                            <p class="card-text text-blueviolet">
+                                Краткое описание: {{ item.short_description|truncatechars:30 }}
+                            </p>
+                            <div class="d-flex flex-column pb-2">
+                                <small class="text-blueviolet">Дата выхода: {{ item.date_time }}</small>
+                                <small class="text-blueviolet">Категория: {{ item.category }}</small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between my-2">
+                                    <a href="{{ item.get_absolute_url }}"
+                                       class="btn btn-outline-danger my-auto">Заинтересовало</a>
+                                    {% price_simple_tag item.price_old item.price_new item.discount as price %}
+                                    {{ price }}
+                                </div>
+                                <a href="{% url 'to_cart' item.pk 'add' %}" class="btn btn-danger">Купить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h3 class="text-center text-blueviolet custom-bg">Скидки</h3>
+    <div class="d-flex justify-content-center mb-4">
+        <p class="w-50" style="border-bottom: 3px solid rgb(255, 0, 0);"></p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for item in games_discount %}
+        <div class="col">
+            <div class="card h-100 bg-dark">
+                <div class="p-2">
+                    <img src="{{ item.get_first_photo }}" class="card-img-top custom-border custom_image" alt="...">
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between my-auto">
+                        <h5 class="card-title text-blueviolet">{{ item.title }}</h5>
+                        {% include 'components/_favorite.html' %}
+                    </div>
+                    <p class="card-text text-blueviolet">
+                        Краткое описание: {{ item.short_description|truncatechars:30 }}
+                    </p>
+
+                    <div class="d-flex flex-column pb-2">
+                        <small class="text-blueviolet">Дата выхода: {{ item.date_time }}</small>
+                        <small class="text-blueviolet">Категория: {{ item.category }}</small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between my-2">
+                        <a href="{% url 'detail_path' item.slug %}"
+                           class="btn btn-outline-danger my-auto">Заинтересовало</a>
+                        {% price_simple_tag item.price_old item.price_new item.discount as price %}
+                        {{ price }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

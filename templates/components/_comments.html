@@ -46,7 +46,7 @@
                             <div id="flush-collapse-form{{ forloop.counter }}"
                                  class="accordion-collapse collapse"
                                  data-bs-parent="#accordionFlushExampleForm">
-                                <form action="{% url 'add_reply' c.pk %}" method="post"
+                                <form action="{% url 'add_reply_path' c.pk %}" method="post"
                                       class="mt-5 bg-danger">
                                     {% csrf_token %}
                                     {{ comment_form.as_p }}

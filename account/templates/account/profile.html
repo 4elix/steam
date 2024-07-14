@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Профиль - {{ profile.user.username|title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center" style="overflow: hidden;">
+    <div class="col-4" style="overflow: hidden;">
+        <div class="card h-100 bg-dark">
+            {% if profile.profile_image %}
+            <div class="p-2 text-center">
+                <img src="{{ profile.profile_image.url }}" class="card-img-top profile_image_active"
+                     alt="...">
+            </div>
+            {% else %}
+            <div class="p-2 text-center">
+                <img src="{% static 'image/dont_user.png' %}" class="card-img-top profile_image"
+                     alt="...">
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-column">
+                        <h4 class="card-title text-blueviolet text-center py-2">
+                            Ваше логин: {{ profile.user.username|title }}
+                        </h4>
+                        <p class="card-text text-blueviolet text-center fs-5 py-2">
+                            {% if profile.first_name %}
+                            Имя: {{ profile.first_name }}
+                            {% else %}
+                            Имя: Не указана
+                            {% endif %}
+                        </p>
+                        <p class="card-text text-blueviolet text-center fs-5 py-2">
+                            {% if profile.last_name %}
+                            Фамилия: {{ profile.last_name }}
+                            {% else %}
+                            Фамилия: Не указана
+                            {% endif %}
+                        </p>
+                        <p class="card-text text-blueviolet text-center fs-5 py-2">
+                            {% if profile.first_name %}
+                            Номер телефона: {{ profile.phone }}
+                            {% else %}
+                            Номер телефона: Не указана
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex flex-column">
+                    <a href="{% url 'edit_profile' profile.pk %}" class="btn btn-danger my-2">Изменить профиль</a>
+                    <a href="{% url 'logout' %}" class="btn btn-danger my-2">Выйти из аккаунт</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

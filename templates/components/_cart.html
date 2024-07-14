@@ -1,0 +1,25 @@
+{% load static  %}
+
+<div class="d-flex justify-content-between">
+    <div><p class="text-blueviolet">Название:</p></div>
+    {% if item.product.price_new <= 0 %}
+    <div><p class="text-blueviolet">{{ item.product.price_old }}</p></div>
+    {% else %}
+    <div><p class="text-blueviolet">{{ item.product.price_old }}</p></div>
+    {% endif %}
+    <div class="quantity"><p class="text-blueviolet">Количество товара: {{ item.quantity }}</p>
+        {% if 'cart' in request.path %}
+        <div class="quantity mx-4">
+            <a href="{% url 'to_cart' item.product.pk 'add' %}">
+                <img src="{% static 'image/up.jpg' %}" width="20" height="20" data-action="add" data-product="id"
+                     alt="">
+            </a>
+            <a href="{% url 'to_cart' item.product.pk 'remove' %}">
+                <img src="{% static 'image/down.jpg' %}" width="20" height="20" data-action="remove" data-product="id"
+                     alt="">
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    <div><p>{{ item.get_total_price }}</p></div>
+</div>
