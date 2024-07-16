@@ -2,6 +2,7 @@ from django.http import FileResponse
 from django.views.generic import ListView
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 
 from .forms import ReviewForm
 from account.models import Profile
@@ -43,6 +44,14 @@ class ShowGameRelatedCategories(CatalogPage):
         context = super().get_context_data()
         context['title'] = Categories.objects.get(pk=self.kwargs['cat_id'])
         return context
+
+
+class SearchGameToTitle(CatalogPage):
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return Products.objects.filter(
+            Q(title__iregex=query) | Q(title__icontains=query)
+        )
 
 
 def show_detail(request, slug_path):

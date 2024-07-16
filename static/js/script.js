@@ -1,5 +1,4 @@
 function openFullscreen(img) {
-    // Создать элемент затемнения
     var overlay = document.createElement("div");
     overlay.style.position = "fixed";
     overlay.style.top = "0";
@@ -10,7 +9,6 @@ function openFullscreen(img) {
     overlay.style.zIndex = "9998";
     document.body.appendChild(overlay);
 
-    // Создать элемент для отображения картинки на весь экран
     var fullscreenImg = document.createElement("img");
     fullscreenImg.src = img.src;
     fullscreenImg.style.position = "fixed";
@@ -22,7 +20,6 @@ function openFullscreen(img) {
     fullscreenImg.style.zIndex = "9999";
     document.body.appendChild(fullscreenImg);
 
-    // Создать элемент крестика для закрытия
     var closeButton = document.createElement("span");
     closeButton.style.position = "fixed";
     closeButton.style.top = "20px";
@@ -37,23 +34,30 @@ function openFullscreen(img) {
 }
 
 function closeFullscreen() {
-    // Найти и удалить элемент изображения на весь экран
     var fullscreenImg = document.querySelector("img[style*='position: fixed']");
     if (fullscreenImg) {
         fullscreenImg.parentNode.removeChild(fullscreenImg);
     }
 
-    // Найти и удалить элемент затемнения
     var overlay = document.querySelector("div[style*='background-color: rgba(0, 0, 0, 0.8)']");
     if (overlay) {
         overlay.parentNode.removeChild(overlay);
     }
 
-    // Найти и удалить элемент крестика
     var closeButton = document.querySelector("span[style*='cursor: pointer']");
     if (closeButton) {
         closeButton.parentNode.removeChild(closeButton);
     }
 }
 
-console.log('Start app suka blat')
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.classList.add("loading");
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() {
+        document.body.classList.remove("loading");
+        document.querySelector(".content").style.display = "block";
+    }, 2500);
+});

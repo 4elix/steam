@@ -29,13 +29,16 @@ class CartForAuthenticatedUser:
     def add_or_delete(self, product_id, action):
         order = self.get_cart_info()['order']
         product = Products.objects.get(pk=product_id)
-        order_product = OrderProduct.objects.filter(order=order, product=product).exists()
+        print(product.pk)
+
+        order_product = OrderProduct.objects.filter(order=order, product_id=product.pk).exists()
         if order_product is False:
             create_order_product = OrderProduct.objects.create(order=order, product=product)
             if action == 'add':
                 create_order_product.quantity += 1
             else:
                 create_order_product.quantity -= 1
+
             create_order_product.save()
 
             if create_order_product.quantity <= 0:

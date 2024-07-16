@@ -52,7 +52,6 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-evenly">
-                        <a href="{% url 'download_path' game.slug %}" class="btn btn-outline-danger my-auto">Скачать</a>
                         <a href="#" class="btn btn-outline-danger my-auto">Купить</a>
                         <div class="d-flex flex-column pb-2 text-blueviolet">
                             {% price_simple_tag game.price_old game.price_new game.discount as price %}
@@ -65,6 +64,7 @@
     </div>
 
     <div class="d-flex justify-content-center mt-5">
+        {% if request.user.is_authenticated %}
         <div class="col-8 bg-dark p-3">
             <form action="" method="post" class="text-blueviolet">
                 {% csrf_token %}
@@ -75,6 +75,12 @@
             {% include 'components/_comments.html' %}
 
         </div>
+        {% else %}
+        <div class="col-8 bg-dark p-3">
+            <h3 class="text-center text-blueviolet">Хотите оставить комментарии, вам нужно войти в аккаунт или зарегистрироваться.</h3>
+            {% include 'components/_comments_anonymous.html' %}
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}
