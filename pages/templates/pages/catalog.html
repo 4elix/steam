@@ -44,7 +44,7 @@
                             <div class="card-footer">
                                 <div class="d-flex justify-content-between my-2">
                                     <div class="d-flex flex-column">
-                                        <a href="{{ item.get_absolute_url }}"
+                                        <a href="{{ game.get_absolute_url }}"
                                            class="btn btn-outline-danger my-2">
                                             Заинтересовало
                                         </a>
@@ -85,7 +85,7 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             {% for i in page_obj.paginator.page_range %}
-            {% if i == products.number %}
+            {% if i == games.number %}
             <li class="page-item active"><a class="page-link text-paginator bg-dark" href="?page={{ i }}">{{ i }}</a>
             </li>
             {% else %}

@@ -63,34 +63,3 @@ class EditProfileForm(forms.ModelForm):
                     'placeholder': 'Телефон'
                 })
         }
-
-
-class CreateProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ['profile_image', 'first_name', 'last_name', 'phone']
-        widgets = {
-            'profile_image': forms.FileInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Аватарка'
-                }),
-
-            'first_name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Имя'
-                }),
-
-            'last_name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Фамилия'
-                }),
-
-            'phone': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Телефон'
-                })
-        }

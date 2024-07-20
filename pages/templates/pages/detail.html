@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load price_tag %}
+{% load price_tag status_payment %}
 
 {% block title %}
 {{ game.title }}
@@ -11,21 +11,21 @@
     <div class="d-flex justify-content-center">
         <div class="col-9">
             <div class="card h-100 bg-dark">
-                <div class="d-flex flex-wrap">
+                <div class="d-flex justify-content-center">
+
                     <div class="p-3">
                         <img src="{{ game.get_first_photo }}" class="card-img-top custom-border"
                              style="min-width: 200px;" alt="..." onclick="openFullscreen(this)">
                     </div>
+                </div>
+                <div class="d-flex justify-content-evenly">
+                    {% for i in game.get_second_photo %}
+                    <div class="col-3 my-auto">
 
-                    <div class="d-flex justify-content-evenly">
-                        {% for i in game.get_second_photo %}
-                        <div class="col-3 my-auto">
-
-                            <img src="{{ i.photo.url }}" class="card-img-top custom-border"
-                                 onclick="openFullscreen(this)" alt="...">
-                        </div>
-                        {% endfor %}
+                        <img src="{{ i.photo.url }}" class="card-img-top custom-border"
+                             onclick="openFullscreen(this)" alt="...">
                     </div>
+                    {% endfor %}
                 </div>
                 <div class="card-body">
                     <div class="my-auto">
@@ -52,7 +52,21 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-evenly">
-                        <a href="#" class="btn btn-outline-danger my-auto">Купить</a>
+                        <div class="d-flex flex-column">
+                            {% if request.user.is_authenticated %}
+                            {% check_payment request.user game.pk as status_payment %}
+                            {% if status_payment %}
+                            <a href="{% url 'download_path' game.slug %}"
+                               class="btn btn-outline-danger my-auto">
+                                Скачать
+                            </a>
+                            {% else %}
+                            <a href="{% url 'to_cart' game.pk 'add' %}" class="btn btn-outline-danger">
+                                Купить
+                            </a>
+                            {% endif %}
+                            {% endif %}
+                        </div>
                         <div class="d-flex flex-column pb-2 text-blueviolet">
                             {% price_simple_tag game.price_old game.price_new game.discount as price %}
                             {{ price }}
@@ -77,7 +91,8 @@
         </div>
         {% else %}
         <div class="col-8 bg-dark p-3">
-            <h3 class="text-center text-blueviolet">Хотите оставить комментарии, вам нужно войти в аккаунт или зарегистрироваться.</h3>
+            <h3 class="text-center text-blueviolet">Хотите оставить комментарии, вам нужно войти в аккаунт или
+                зарегистрироваться.</h3>
             {% include 'components/_comments_anonymous.html' %}
         </div>
         {% endif %}

@@ -4,5 +4,5 @@ register = template.Library()
 
 
 @register.simple_tag()
-def check_favorite(user, product_id):
-    return Favorite.objects.filter(auth=user, product_id=product_id).exists()
+def check_favorite(user, game_id):
+    return Favorite.objects.filter(auth=user, game_id=game_id).exists()

@@ -54,8 +54,9 @@
                         </div>
                         <div class="card-footer">
                             <div class="d-flex justify-content-end">
-                                <a href="{% url 'profile' request.user.pk %}" class="btn btn-outline-danger my-auto">Перейти
-                                    на профель</a>
+                                <a href="{% url 'profile' request.user.pk %}" class="btn btn-outline-danger my-auto">
+                                    Перейти на профиль
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -66,20 +67,20 @@
             <div class="card bg-dark">
                 {% if list_desired %}
                 <ul class="list-group list-group-flush p-2">
-                    {% for i in list_desired %}
+                    {% for item in list_desired %}
                     <li class="bg-dark list_li">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ i.product.get_absolute_url }}"
+                            <a href="{{ item.game.get_absolute_url }}"
                                class="list-group-item bg-dark text-danger my-auto fs-5" style="border: none;">
-                                {{ i.product.title }}
+                                {{ item.game.title }}
                             </a>
-                            {% if i.product.discount > 0.0 %}
+                            {% if item.game.discount > 0.0 %}
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6">
-                            скидка {{ i.product.discount }}%
+                            скидка {{ item.game.discount }}%
                             </span>
-                            <small class="text-danger my-auto py-3 fs-5">{{ i.product.price_new }} $$</small>
+                            <small class="text-danger my-auto py-3 fs-5">{{ item.game.price_new }} $$</small>
                             {% else %}
-                            <small class="text-danger my-auto py-3 fs-5">{{ i.product.price_old }} $$</small>
+                            <small class="text-danger my-auto py-3 fs-5">{{ item.game.price_old }} $$</small>
                             {% endif %}
                         </div>
                     </li>

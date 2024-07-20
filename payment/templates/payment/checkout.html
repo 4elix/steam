@@ -19,15 +19,15 @@
             {% for item in items %}
             <ul class="list-group list-group-flush my-3 text-center">
                 <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
-                    Товар: {{ item.product.title }}
+                    Товар: {{ item.game.title }}
                 </li>
-                {% if item.product.price_new <= 0 %}
+                {% if item.game.price_new <= 0 %}
                 <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
-                    Цена: {{ item.product.price_old }}
+                    Цена: {{ item.game.price_old }}
                 </li>
                 {% else %}
                 <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">
-                    Цена: {{ item.product.price_new }}
+                    Цена: {{ item.game.price_new }}
                 </li>
                 {% endif %}
                 <li class="list-group-item list-group-item custom-bg text-danger" aria-current="true">

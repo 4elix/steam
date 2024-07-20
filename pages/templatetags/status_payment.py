@@ -5,5 +5,5 @@ register = template.Library()
 
 
 @register.simple_tag()
-def check_payment(user, product_id):
-    return GameLibrary.objects.filter(user=user, product_id=product_id).exists()
+def check_payment(user, game_id):
+    return GameLibrary.objects.filter(user=user, game_id=game_id).exists()

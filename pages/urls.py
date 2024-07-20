@@ -9,7 +9,7 @@ urlpatterns = [
     path('category/<int:cat_id>/', views.ShowGameRelatedCategories.as_view(), name='category_path'),
     path('catalog/search/', views.SearchGameToTitle.as_view(), name='search_catalog'),
 
-    path('like/<int:pk_product>/', views.like_logic, name='like_active_path'),
+    path('like/<int:pk_game>/', views.like_logic, name='like_active_path'),
     path('desired/<int:user_id>', views.page_desired, name='desired_path'),
 
     path('comment/<int:pk>/reply', views.add_reply, name='add_reply_path'),

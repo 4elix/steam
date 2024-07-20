@@ -1,15 +1,15 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from .models import Products, OrderProduct, Order, Customer
+from .models import Games, OrderProduct, Order, Customer
 
 
 class CartForAuthenticatedUser:
-    def __init__(self, request, product_id=None, action=None):
+    def __init__(self, request, game_id=None, action=None):
         self.user = request.user
         self.request = request
-        if product_id and action:
-            self.add_or_delete(product_id, action)
+        if game_id and action:
+            self.add_or_delete(game_id, action)
 
     def get_cart_info(self):
         customer, created = Customer.objects.get_or_create(user=self.user)
@@ -22,35 +22,33 @@ class CartForAuthenticatedUser:
             'cart_total_price': cart_total_price,
             'cart_total_quantity': cart_total_quantity,
             'order': order,
-            'products': order_product
+            'games': order_product
         }
         return context
 
-    def add_or_delete(self, product_id, action):
+    def add_or_delete(self, game_id, action):
         order = self.get_cart_info()['order']
-        product = Products.objects.get(pk=product_id)
-        print(product.pk)
-
-        order_product = OrderProduct.objects.filter(order=order, product_id=product.pk).exists()
-        if order_product is False:
-            create_order_product = OrderProduct.objects.create(order=order, product=product)
-            if action == 'add':
-                create_order_product.quantity += 1
-            else:
-                create_order_product.quantity -= 1
-
-            create_order_product.save()
-
-            if create_order_product.quantity <= 0:
-                create_order_product.delete()
+        game = Games.objects.get(pk=game_id)
+        create_order_product = OrderProduct.objects.create(order=order, game=game)
+        if action == 'add':
+            create_order_product.quantity += 1
         else:
-            return 404
+            create_order_product.quantity -= 1
+
+        create_order_product.save()
+
+        if create_order_product.quantity <= 0:
+            create_order_product.delete()
+
+    def check_game_order_product(self, game_id, order):
+        status = OrderProduct.objects.filter(order=order, game_id=game_id).exists()
+        return status
 
     def clear(self):
         order = self.get_cart_info()['order']
         order_product = order.orderproduct_set.all()
-        for product in order_product:
-            product.delete()
+        for game in order_product:
+            game.delete()
         order.save()
 
 
@@ -61,6 +59,6 @@ def get_cart_data(request):
         'cart_total_price': cart_info['cart_total_price'],
         'cart_total_quantity': cart_info['cart_total_quantity'],
         'order': cart_info['order'],
-        'products': cart_info['products']
+        'games': cart_info['games']
     }
     return context

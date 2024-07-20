@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from pages.models import Products
+from pages.models import Games
 
 
 class Customer(models.Model):
@@ -32,18 +32,18 @@ class Order(models.Model):
     @property
     def get_cart_total_price(self):
         order_product = self.orderproduct_set.all()  # получаем заказанные продукты самого заказа
-        total_price = sum([product.get_total_price for product in order_product])
+        total_price = sum([games.get_total_price for games in order_product])
         return total_price
 
     @property
     def get_cart_total_quantity(self):
         order_product = self.orderproduct_set.all()  # получаем заказанные продукты самого заказа
-        total_quantity = sum([product.quantity for product in order_product])
+        total_quantity = sum([games.quantity for games in order_product])
         return total_quantity
 
 
 class OrderProduct(models.Model):
-    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True, verbose_name='Продукт')
+    game = models.ForeignKey(Games, on_delete=models.SET_NULL, null=True, verbose_name='Продукт')
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, verbose_name='Заказ')
     quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество')
     added_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
@@ -55,10 +55,10 @@ class OrderProduct(models.Model):
     # Метод который вернет сумму товара в его кол-ве
     @property  # декоратор нужен что-бы было вызывать метод в другой модели
     def get_total_price(self):
-        if self.product.price_new == 0:
-            total_price = self.product.price_old * self.quantity
+        if self.game.price_new == 0:
+            total_price = self.game.price_old * self.quantity
         else:
-            total_price = self.product.price_new * self.quantity
+            total_price = self.game.price_new * self.quantity
 
         return total_price
 
@@ -93,7 +93,7 @@ class City(models.Model):
 
 class GameLibrary(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='library_game')
+    game = models.ForeignKey(Games, on_delete=models.CASCADE, related_name='library_game')
 
     def __str__(self):
         return str(self.user)

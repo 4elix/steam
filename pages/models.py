@@ -18,7 +18,7 @@ class Categories(models.Model):
         verbose_name_plural = 'Категории'
 
 
-class Products(models.Model):
+class Games(models.Model):
     title = models.CharField(max_length=200, verbose_name='Заголовок')
     short_description = models.TextField(verbose_name='Краткое описание')
     full_description = models.TextField(verbose_name='Полное описание')
@@ -74,8 +74,8 @@ class Review(models.Model):
     datetime_review = models.DateTimeField(auto_now=True, verbose_name='Дата и время создания комментария')
     auth = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     content = models.TextField(verbose_name='Комментарий')
-    product = models.ForeignKey(Products, on_delete=models.CASCADE,
-                                verbose_name='К какому продукты отставлен комментарий', related_name='comments')
+    game = models.ForeignKey(Games, on_delete=models.CASCADE,
+                             verbose_name='К какому продукты отставлен комментарий', related_name='comments')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
 
     def __str__(self):
@@ -88,10 +88,9 @@ class Review(models.Model):
 
 class Favorite(models.Model):
     auth = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    game = models.ForeignKey(Games, on_delete=models.CASCADE)
 
 
-class ProductImage(models.Model):
+class GameImage(models.Model):
     photo = models.ImageField(verbose_name="Фото", upload_to="products/", blank=True, null=True)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='game_photo')
-
+    product = models.ForeignKey(Games, on_delete=models.CASCADE, related_name='game_photo')

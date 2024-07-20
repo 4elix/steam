@@ -7,28 +7,29 @@ from django.db.models import Q
 from .forms import ReviewForm
 from account.models import Profile
 from payment.models import GameLibrary
-from .models import Categories, Products, Favorite, Review
+from .models import Categories, Games, Favorite, Review
 
 
 def index_page(request):
     categories = Categories.objects.all()
-    games = Products.objects.all()
-    games_discount = [i for i in games if i.discount > 0]
+    games = Games.objects.filter(discount=0)
+
+    games_discount = [i for i in Games.objects.all() if i.discount > 0]
 
     content = {
         'active': 1,
         'categories': categories,
-        'games': games[2:5][::-1],
-        'games_discount': games_discount
+        'games': games[3:7][::-1],
+        'games_discount': games_discount[:3]
     }
     return render(request, 'pages/index.html', context=content)
 
 
 class CatalogPage(ListView):
-    model = Products
+    model = Games
     template_name = 'pages/catalog.html'
     context_object_name = 'games'
-    paginate_by = 3
+    paginate_by = 4
     extra_context = {
         'active': 2,
         'categories': Categories.objects.all()
@@ -37,7 +38,7 @@ class CatalogPage(ListView):
 
 class ShowGameRelatedCategories(CatalogPage):
     def get_queryset(self):
-        games = Products.objects.filter(category_id=self.kwargs['cat_id'])
+        games = Games.objects.filter(category_id=self.kwargs['cat_id'])
         return games
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -49,13 +50,13 @@ class ShowGameRelatedCategories(CatalogPage):
 class SearchGameToTitle(CatalogPage):
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return Products.objects.filter(
+        return Games.objects.filter(
             Q(title__iregex=query) | Q(title__icontains=query)
         )
 
 
 def show_detail(request, slug_path):
-    game = get_object_or_404(Products, slug=slug_path)
+    game = get_object_or_404(Games, slug=slug_path)
 
     comments = game.comments.filter(parent=None)
     if request.method == "POST":
@@ -63,8 +64,9 @@ def show_detail(request, slug_path):
         if comment_form.is_valid():
             comment_form = comment_form.save(commit=False)
             comment_form.auth = request.user
-            comment_form.product = game
+            comment_form.game = game
             comment_form.save()
+            return redirect('detail_path', game.slug)
         else:
             messages.warning(request, 'Что то пошло не так')
             return redirect('detail_path', game.slug)
@@ -87,12 +89,13 @@ def add_reply(request, pk):
         if comment_form.is_valid():
             comment_form = comment_form.save(commit=False)
             comment_form.auth = request.user
-            comment_form.product = comment.product
+            comment_form.game = comment.game
             comment_form.parent = comment
             comment_form.save()
+            return redirect('detail_path', comment.game.slug)
         else:
             messages.warning(request, 'Что то пошло не так')
-            return redirect('detail_path', comment.product.slug)
+            return redirect('detail_path', comment.game.slug)
     else:
         comment_form = ReviewForm()
 
@@ -102,15 +105,15 @@ def add_reply(request, pk):
     return render(request, 'pages/detail.html', content)
 
 
-def like_logic(request, pk_product):
+def like_logic(request, pk_game):
     if request.user.is_authenticated:
         user = request.user
-        status = Favorite.objects.filter(auth=user, product_id=pk_product).exists()
+        status = Favorite.objects.filter(auth=user, game_id=pk_game).exists()
         if status:
-            like = Favorite.objects.get(auth=user, product_id=pk_product)
+            like = Favorite.objects.get(auth=user, game_id=pk_game)
             like.delete()
         else:
-            like = Favorite.objects.create(auth=user, product_id=pk_product)
+            like = Favorite.objects.create(auth=user, game_id=pk_game)
             like.save()
 
         return redirect(request.META.get('HTTP_REFERER', 'home_path'))
@@ -135,7 +138,7 @@ def page_desired(request, user_id):
 
 
 def download_file(request, slug_path):
-    game = get_object_or_404(Products, slug=slug_path)
+    game = get_object_or_404(Games, slug=slug_path)
     if game.file_came:
         response = FileResponse(open(game.file_came.path, 'rb'))
         response['Content-Disposition'] = f'attachment; filename="{game.file_came.name}"'

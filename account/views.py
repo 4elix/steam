@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views.generic import UpdateView, CreateView
 from django.urls import reverse_lazy
 
-from .forms import RegisterForm, LoginForm, EditProfileForm, CreateProfileForm
+from .forms import RegisterForm, LoginForm, EditProfileForm
 from .models import Profile
 
 
@@ -65,14 +65,11 @@ def user_logout(request):
 
 
 def show_profile(request, user_id):
-    try:
-        profile = Profile.objects.get(user_id=user_id)
-        content = {
-            'profile': profile
-        }
-        return render(request, 'account/profile.html', content)
-    except:
-        return redirect('create_profile', user_id)
+    profile = Profile.objects.get(user_id=user_id)
+    content = {
+        'profile': profile
+    }
+    return render(request, 'account/profile.html', content)
 
 
 class EditProfile(UpdateView):
