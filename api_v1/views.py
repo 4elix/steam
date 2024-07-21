@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from pages.models import Games, Categories, TagsGame
-from .serializers import GameSerializer, CategorySerializer, TagsSerializer
+from .serializers import GameSerializer, CategorySerializer, TagSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -16,7 +16,7 @@ def game_list(request):
         serializer = GameSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = GameSerializer(data=request.data)
+        serializer = GameSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -67,13 +67,14 @@ def category_detail(request, cat_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET', 'POST'])
 def tags_game_list(request):
     if request.method == 'GET':
-        queryset = TagsGame.objects.annotate(number_games_in_tag=Count('games')).all()
-        serializer = TagsSerializer(queryset, many=True, context={'request': request})
+        queryset = TagsGame.objects.annotate(number_games_in_tag=Count('tag_game')).all()
+        serializer = TagSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = TagsSerializer(data=request.data)
+        serializer = TagSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -83,10 +84,10 @@ def tags_game_list(request):
 def tags_detail(request, pk_path):
     tag = TagsGame.objects.annotate(number_games_in_tag=Count('tag_game')).get(pk=pk_path)
     if request.method == 'GET':
-        serializer = TagsSerializer(tag, context={'request': request})
+        serializer = TagSerializer(tag, context={'request': request})
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = TagsSerializer(tag, data=request.data, context={'request': request})
+        serializer = TagSerializer(tag, data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

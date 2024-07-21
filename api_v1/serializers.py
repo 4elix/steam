@@ -27,8 +27,7 @@ class GameSerializer(serializers.ModelSerializer):
         return game
 
     def update(self, instance, validated_data):
-        instance.price_old = validated_data.get('price_old')
-        instance.price_new = validated_data.get('price_new')
+        instance.title = validated_data.get('title')
         instance.save()
         return instance
 
@@ -41,7 +40,7 @@ class CategorySerializer(serializers.ModelSerializer):
     number_games_in_category = serializers.IntegerField(read_only=True)
 
 
-class TagsSerializer(serializers.ModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = TagsGame
         fields = ['id', 'tag_name', 'number_games_in_tag']
