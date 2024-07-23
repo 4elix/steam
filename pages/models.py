@@ -32,7 +32,8 @@ class Games(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, verbose_name='Категория')
     slug = models.SlugField(max_length=200, blank=True, null=True)
     tags = models.ManyToManyField('TagsGame', related_name='tag_game', verbose_name='Теги или под категории для игры')
-    file_came = models.FileField(upload_to='game/file/', verbose_name='Файлы для скачки', null=True, blank=True)
+    file_game = models.FileField(upload_to='game/file/', verbose_name='Файлы для скачки', null=True, blank=True)
+    views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
         return self.title
@@ -94,3 +95,20 @@ class Favorite(models.Model):
 class GameImage(models.Model):
     photo = models.ImageField(verbose_name="Фото", upload_to="products/", blank=True, null=True)
     product = models.ForeignKey(Games, on_delete=models.CASCADE, related_name='game_photo')
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    game = models.ForeignKey(Games, on_delete=models.CASCADE)
+    quantity_star = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.quantity_star)
+
+
+class ViewsGame(models.Model):
+    game = models.ForeignKey(Games, on_delete=models.CASCADE)
+    user_session = models.CharField(max_length=150)
+
+
+

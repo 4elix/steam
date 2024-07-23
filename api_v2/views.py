@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from pages.models import Games, Categories, TagsGame
-from api_v1.serializers import GameSerializer, CategorySerializer, TagSerializer
+from pages.models import Games, Categories, TagsGame, Favorite
+from api_v1.serializers import GameSerializer, CategorySerializer, TagSerializer, FavoriteSerializer
 
 
 class GameList(APIView):
@@ -103,3 +103,17 @@ class TagDetail(APIView):
         tag = TagsGame.objects.annotate(number_games_in_tag=Count('tag_game')).get(pk=pk_path)
         tag.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class FavoriteList(APIView):
+    def get(self, request):
+        queryset = Favorite.objects.all()
+        serializer = FavoriteSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = FavoriteSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+

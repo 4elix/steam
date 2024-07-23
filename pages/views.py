@@ -7,7 +7,7 @@ from django.db.models import Q
 from .forms import ReviewForm
 from account.models import Profile
 from payment.models import GameLibrary
-from .models import Categories, Games, Favorite, Review
+from .models import Categories, Games, Favorite, Review, Rating, ViewsGame
 
 
 def index_page(request):
@@ -74,13 +74,34 @@ def show_detail(request, slug_path):
     else:
         comment_form = ReviewForm()
 
+    if request.user.is_authenticated:
+        if not request.session.session_key:
+            request.session.save()
+
+        session_key = request.session.session_key
+        status_view = ViewsGame.objects.filter(game=game, user_session=session_key).exists()
+        if status_view is False and session_key != 'None':
+            view = ViewsGame()
+            view.game = game
+            view.user_session = session_key
+            view.save()
+            game.views += 1
+            game.save()
+
     content = {
         'game': game,
         'comments': comments,
-        'comment_form': comment_form
+        'comment_form': comment_form,
+        'range_number': [num for num in range(1, 6)][::-1]
     }
     return render(request, 'pages/detail.html', content)
 
+
+# {% for num in  %}
+#
+#
+#                                 {% endfor %}
+#                                 <button type="submit" class="btn btn-danger">Оценить</button>
 
 def add_reply(request, pk):
     comment = get_object_or_404(Review, pk=pk)
@@ -146,3 +167,23 @@ def download_file(request, slug_path):
     else:
         messages.error(request, 'Нету файла игры (((')
         return redirect(request.META.get('HTTP_REFERER', 'home_path'))
+
+
+def rating_logic(request, pk_path):
+    if request.user.is_authenticated:
+        user = request.user
+        game = get_object_or_404(Games, pk=pk_path)
+        status = Rating.objects.filter(user_id=user.pk, game_id=game.pk).exists()
+        if status is False:
+            if request.method == 'GET':
+                int_rating = request.GET.get('stars')
+                rating = Rating.objects.create(user=user, game=game, quantity_star=int_rating)
+                rating.save()
+                return redirect('detail_path', game.slug)
+        else:
+            messages.error(request, 'Вы не можете оценить одну и тужу игру')
+            return redirect(request.META.get('HTTP_REFERER', 'home_path'))
+    else:
+        messages.error(request, 'Вы не вошли в аккаунт, поэтому вы не можете оценить игру')
+        return redirect(request.META.get('HTTP_REFERER', 'home_path'))
+

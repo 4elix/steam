@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load price_tag status_payment %}
+{% load price_tag status_payment rating_tag %}
 
 {% block title %}
 {{ game.title }}
@@ -48,6 +48,33 @@
                         {% for tag in game.tags.all %}
                         <small class="text-blueviolet fs-5 px-2">{{ tag }}</small>
                         {% endfor %}
+                    </div>
+
+                    <div class="my-5">
+                        {% if request.user.is_authenticated %}
+                        {% show_rating request.user game.pk as status_rating %}
+                        {% if status_rating.status == 'show_form' %}
+                        <form action="{% url 'rating_activate' game.pk %}">
+                            <div class="d-flex">
+                                <div class="star-rating">
+                                    {% for num in range_number %}
+                                    <input type="radio" name="stars" id="star-a_{{ num }}" value="{{ num }}">
+                                    <label for="star-a_{{ num }}"></label>
+                                    {% endfor %}
+                                </div>
+                                <button type="submit" class="btn btn-danger">Оценить</button>
+                            </div>
+                        </form>
+
+                        <p class="text-blueviolet fs-5">Общая оценка: {{ status_rating.overall_rating }} ⭐</p>
+                        {% else %}
+                        <p class="text-blueviolet fs-5">Дополнительная информация:</p>
+
+                        <p class="text-blueviolet fs-5">Ваша оценка: {{ status_rating.rating }} ⭐</p>
+                        <p class="text-blueviolet fs-5">Общая оценка: {{ status_rating.overall_rating }} ⭐</p>
+                        {% endif %}
+                        {% endif %}
+                        <p class="text-blueviolet fs-5">Просмотры: {{ game.views }}<i class="bi bi-eye-fill"></i></p>
                     </div>
                 </div>
                 <div class="card-footer">

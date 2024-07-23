@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'payment.apps.PaymentConfig',
     'api_v1.apps.ApiV1Config',
-    'api_v2.apps.ApiV2Config'
+    'api_v2.apps.ApiV2Config',
+    'api_v3.apps.ApiV3Config',
 ]
 
 MIDDLEWARE = [

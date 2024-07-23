@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from pages.models import Games, Categories, TagsGame
+from pages.models import Games, Categories, TagsGame, Favorite
 
 
 class GameSerializer(serializers.ModelSerializer):
@@ -46,3 +46,11 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ['id', 'tag_name', 'number_games_in_tag']
 
     number_games_in_tag = serializers.IntegerField(read_only=True)
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = ['auth', 'game']
+
+

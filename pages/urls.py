@@ -14,4 +14,6 @@ urlpatterns = [
 
     path('comment/<int:pk>/reply', views.add_reply, name='add_reply_path'),
     path('download/<slug:slug_path>/', views.download_file, name='download_path'),
+
+    path('rating/<int:pk_path>/', views.rating_logic, name='rating_activate')
 ]
